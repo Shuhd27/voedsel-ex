@@ -6,10 +6,10 @@
                     <!-- Header Section -->
                     <div class="flex justify-between items-center mb-6">
                         <h1 class="text-2xl font-bold text-green-600">Overzicht Productvoorraden</h1>
-                        <div class="flex gap-3">
-                            <form action="{{ route('warehouse.index') }}" method="GET" class="flex items-center gap-3">
-                                <select class="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700" name="category">
-                                    <option value="" selected>Selecteer Categorie</option>
+                        <div class="flex w-1/3">
+                            <form action="{{ route('warehouse.index') }}" method="GET" class="flex items-center gap-3 w-full">
+                                <select class="px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-700 w-1/2" name="category">
+                                    <option value="Nothing" selected>Selecteer Categorie</option>
                                     <option value="AGF" {{ request('category') == 'AGF' ? 'selected' : '' }}>AGF</option>
                                     <option value="KV" {{ request('category') == 'KV' ? 'selected' : '' }}>KV</option>
                                     <option value="ZPE" {{ request('category') == 'ZPE' ? 'selected' : '' }}>ZPE</option>
