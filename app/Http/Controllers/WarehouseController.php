@@ -60,4 +60,21 @@ class WarehouseController extends Controller
             return redirect()->route('warehouse.index')->with('error', 'Er is iets fout gegaan bij het ophalen van de data, probeer het later opnieuw.');
         }
     }
+
+    public function edit($id)
+    {
+        try {
+            // Call the stored procedure to retrieve the warehouse data by product ID
+            $product = DB::select('CALL sp_read_voorraad_by_id(?)', [$id]);
+            if (empty($product)) {
+                return redirect()->route('warehouse.index')->with('error', 'Product not found.');
+            }
+            return view('warehouse.edit', ['product' => $product[0]]);
+        } catch (\Exception $e) {
+            Log::error('Error retrieving product data for edit: ' . $e->getMessage());
+            return redirect()->route('warehouse.index')->with('error', 'Er is iets fout gegaan bij het ophalen van de data, probeer het later opnieuw.');
+        }
+    }
+
+    
 }
