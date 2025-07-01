@@ -20,6 +20,7 @@ return new class extends Migration
         select
             
             WER.id as warehouse_id,
+            PRO.Id as product_id,
             PRO.Name as product_name,
             WER.quantity as quantity,
             CAT.Name as category,
@@ -40,6 +41,7 @@ return new class extends Migration
         
         group by
             WER.id,
+            PRO.Id,
             PRO.Name,
             WER.quantity,
             WER.Packaging_unit,
