@@ -44,7 +44,7 @@ class FamilyController extends Controller
             }
 
             // $family is een array, pak het eerste element
-            return view('family.show', ['family' => $family[0]]);
+            return view('family.show', ['family' => $family[0], 'food_packages' => $family]);
         } catch (\Exception $e) {
             Log::error('Error retrieving family data: ' . $e->getMessage());
             return redirect()->route('family.index')->with('error', 'Er is iets fout gegaan bij het ophalen van de data, probeer het later opnieuw.');
@@ -75,14 +75,10 @@ class FamilyController extends Controller
         ]);
 
         $familystatusResult = DB::select('SELECT status FROM food_packages WHERE family_id = ?', [$id]);
-        // dd($familystatusResult);
         if (!empty($familystatusResult)) {
             foreach ($familystatusResult as $result) {
-
-
-                if ($result == 'NietMeerIngeschreven') {
-                    return redirect()->route('family.show', $id)
-                        ->withErrors('Dit gezin is niet meer ingeschreven en kan daarom niet worden aangepast.');
+                if ($result->status === 'NietMeerIngeschreven') {
+                    return redirect()->route('family.show', $id)->with('error','Dit gezin is niet meer ingeschreven en kan daarom niet worden aangepast.');
                 }
             }
         }
@@ -108,3 +104,5 @@ class FamilyController extends Controller
         }
     }
 }
+    
+
