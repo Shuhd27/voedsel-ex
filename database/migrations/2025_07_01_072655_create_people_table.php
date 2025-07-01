@@ -17,15 +17,17 @@ return new class extends Migration
         DROP TABLE IF EXISTS People;
         CREATE TABLE People (
             Id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            family_id INT UNSIGNED NOT NULL,
+            family_id INT UNSIGNED NULL,
             first_name VARCHAR(100) NOT NULL,
             infix VARCHAR(50) DEFAULT NULL,
             last_name VARCHAR(100) NOT NULL,
             birth_date DATE NOT NULL,
-            person_type ENUM("Manager", "Vrijwilliger", "Klant") NOT NULL,
+            person_type ENUM("Manager", "Vrijwilliger", "Klant", "Medewerker") NOT NULL,
             is_representative BIT NOT NULL DEFAULT 0,
-            created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
-            updated_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            IsActive BIT NOT NULL DEFAULT 1,
+            Note TEXT DEFAULT NULL,
+            Created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            Updated_at DATETIME(6) NOT NULL DEFAULT NOW(6),
             FOREIGN KEY (family_id) REFERENCES Family(id)
     );
 ');

@@ -20,8 +20,10 @@ return new class extends Migration
             product_id INT UNSIGNED NOT NULL,
             warehouse_id INT UNSIGNED NOT NULL,
             location VARCHAR(100) DEFAULT NULL,
-            created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
-            updated_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            IsActive BIT NOT NULL DEFAULT 1,
+            Note TEXT DEFAULT NULL,
+            Created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            Updated_at DATETIME(6) NOT NULL DEFAULT NOW(6),
             FOREIGN KEY (product_id) REFERENCES products(id),
             FOREIGN KEY (warehouse_id) REFERENCES warehouses(id)
     );

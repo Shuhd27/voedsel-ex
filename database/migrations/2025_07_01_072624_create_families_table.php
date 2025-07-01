@@ -23,10 +23,11 @@ return new class extends Migration
             number_of_adults TINYINT UNSIGNED NOT NULL,
             number_of_children TINYINT UNSIGNED NOT NULL,
             number_of_babies TINYINT UNSIGNED NOT NULL,
-            total_number_of_people TINYINT UNSIGNED AS (number_of_adults + number_of_children + number_of_babies) STORED,
-            is_active BIT NOT NULL DEFAULT 1,
-            created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
-            updated_at DATETIME(6) NOT NULL DEFAULT NOW(6)
+            total_number_of_people TINYINT UNSIGNED,
+            IsActive BIT NOT NULL DEFAULT 1,
+            Note TEXT DEFAULT NULL,
+            Created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            Updated_at DATETIME(6) NOT NULL DEFAULT NOW(6)
     );
 ');
     }

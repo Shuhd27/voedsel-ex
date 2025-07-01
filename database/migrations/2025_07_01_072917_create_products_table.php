@@ -20,12 +20,14 @@ return new class extends Migration
             category_id INT UNSIGNED NOT NULL,
             name VARCHAR(150) NOT NULL,
             allergy_type VARCHAR(100) DEFAULT NULL,
-            barcode VARCHAR(50) UNIQUE NOT NULL,
+            barcode VARCHAR(50) NOT NULL,
             expiration_date DATE NOT NULL,
             description TEXT DEFAULT NULL,
             status ENUM("OpVoorraad", "NietOpVoorraad", "NietLeverbaar", "OverHoudbaarheidsDatum") NOT NULL DEFAULT "OpVoorraad",
-            created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
-            updated_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            IsActive BIT NOT NULL DEFAULT 1,
+            Note TEXT DEFAULT NULL,
+            Created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            Updated_at DATETIME(6) NOT NULL DEFAULT NOW(6),
             FOREIGN KEY (category_id) REFERENCES categories(id)
     );
 ');

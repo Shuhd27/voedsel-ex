@@ -22,8 +22,10 @@ return new class extends Migration
             composition_date DATE NOT NULL,
             distribution_date DATE DEFAULT NULL,
             status ENUM("Uitgereikt", "NietUitgereikt", "NietMeerIngeschreven") NOT NULL DEFAULT "Uitgereikt",
-            created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
-            updated_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            IsActive BIT NOT NULL DEFAULT 1,
+            Note TEXT DEFAULT NULL,
+            Created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            Updated_at DATETIME(6) NOT NULL DEFAULT NOW(6),
             FOREIGN KEY (family_id) REFERENCES Family(id)
     );
 ');

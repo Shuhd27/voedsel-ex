@@ -20,8 +20,10 @@ return new class extends Migration
             food_package_id INT UNSIGNED NOT NULL,
             product_id INT UNSIGNED NOT NULL,
             quantity_product_units INT UNSIGNED NOT NULL, -- AantalProductEenheden
-            created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
-            updated_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            IsActive BIT NOT NULL DEFAULT 1,
+            Note TEXT DEFAULT NULL,
+            Created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            Updated_at DATETIME(6) NOT NULL DEFAULT NOW(6),
             FOREIGN KEY (food_package_id) REFERENCES food_packages(id),
             FOREIGN KEY (product_id) REFERENCES products(id)
     );

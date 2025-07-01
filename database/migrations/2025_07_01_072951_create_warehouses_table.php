@@ -21,8 +21,10 @@ return new class extends Migration
             delivery_date DATE DEFAULT NULL,
             packaging_unit VARCHAR(50) NOT NULL,
             quantity INT UNSIGNED NOT NULL,
-            created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
-            updated_at DATETIME(6) NOT NULL DEFAULT NOW(6)
+            IsActive BIT NOT NULL DEFAULT 1,
+            Note TEXT DEFAULT NULL,
+            Created_at DATETIME(6) NOT NULL DEFAULT NOW(6),
+            Updated_at DATETIME(6) NOT NULL DEFAULT NOW(6)
     );
 ');
     }
