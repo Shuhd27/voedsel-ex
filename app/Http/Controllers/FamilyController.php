@@ -75,20 +75,22 @@ class FamilyController extends Controller
         ]);
 
         $familystatusResult = DB::select('SELECT status FROM food_packages WHERE family_id = ?', [$id]);
-        
+        // dd($familystatusResult);
         if (!empty($familystatusResult)) {
-            $familystatus = $familystatusResult[0]->status;
-            
-            if($familystatus == 'NietMeerIngeschreven'){
-                return redirect()->route('family.show', $id)
-                    ->withErrors('Dit gezin is niet meer ingeschreven en kan daarom niet worden aangepast.');
+            foreach ($familystatusResult as $result) {
+
+
+                if ($result == 'NietMeerIngeschreven') {
+                    return redirect()->route('family.show', $id)
+                        ->withErrors('Dit gezin is niet meer ingeschreven en kan daarom niet worden aangepast.');
+                }
             }
         }
 
         try {
             // Map the status to database ENUM values
             $dbStatus = $validated['status'] === 'Uitgereikt' ? 'Uitgereikt' : 'NietUitgereikt';
-            
+
             // Set distribution date if status is "Uitgereikt"
             if ($validated['status'] === 'Uitgereikt') {
                 $datum = now()->format('Y-m-d');

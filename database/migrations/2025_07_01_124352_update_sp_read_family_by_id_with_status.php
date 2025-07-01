@@ -23,6 +23,7 @@ return new class extends Migration
                     FAM.number_of_adults AS Volwassenen,
                     FAM.number_of_children AS Kinderen,
                     FAM.number_of_babies AS Babys,
+                    FAM.total_number_of_people AS TotaalAantalPersonen,
                     REP.is_representative AS Vertegenwoordiger,
                     COALESCE(FP.status, "NietUitgereikt") AS Status,
                     FP.distribution_date AS DatumUitgifte,
@@ -33,8 +34,7 @@ return new class extends Migration
                 INNER JOIN People REP ON REP.family_id = FAM.id AND REP.is_representative = b\'1\' AND REP.IsActive = b\'1\'
                 LEFT JOIN food_packages FP ON FP.family_id = FAM.id AND FP.IsActive = b\'1\'
                 WHERE FAM.IsActive = b\'1\' AND FAM.id = p_id
-                GROUP BY FAM.id, FAM.name, FAM.number_of_adults, FAM.number_of_children, FAM.number_of_babies, REP.is_representative, FP.status, FP.distribution_date
-                ORDER BY FAM.name ASC;
+                GROUP BY FAM.id, FAM.name, FAM.number_of_adults, FAM.number_of_children, FAM.number_of_babies, REP.is_representative, FP.status, FP.distribution_date;
             END
         ');
     }

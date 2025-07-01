@@ -21,58 +21,11 @@
                         <td class="p-2 border-b">{{ $family->Omschrijving }}</td>
                     </tr>
                     <tr>
-                        <th class="text-left p-2 border-b">Volwassenen</th>
-                        <td class="p-2 border-b">{{ $family->Volwassenen }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-left p-2 border-b">Kinderen</th>
-                        <td class="p-2 border-b">{{ $family->Kinderen }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-left p-2 border-b">Babys</th>
-                        <td class="p-2 border-b">{{ $family->Babys }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-left p-2 border-b">Vertegenwoordiger</th>
-                        <td class="p-2 border-b">{{ $family->Vertegenwoordiger }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-left p-2 border-b">Status Voedselpakket</th>
-                        <td class="p-2 border-b">
-                            {{ 
-                                ($family->Status === 'NietUitgereikt' || $family->Status === 'NietMeerIngeschreven') 
-                                ? 'Niet uitgereikt' 
-                                : ($family->Status === 'Uitgereikt' ? 'Uitgereikt' : 'Niet uitgereikt') 
-                            }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-left p-2 border-b">Datum Uitgifte</th>
-                        <td class="p-2 border-b">{{ $family->DatumUitgifte ?? '-' }}</td>
+                        <th class="text-left p-2 border-b">Totaal aantaal personen</th>
+                        <td class="p-2 border-b">{{ $family->TotaalAantalPersonen }}</td>
                     </tr>
                 </tbody>
             </table>
-
-            <!-- Formulier om status te wijzigen -->
-            <form method="POST" action="{{ route('family.update', $family->id) }}">
-                @csrf
-                @method('PUT')
-
-                <label for="status" class="block mb-2 font-semibold">Wijzig status voedselpakket:</label>
-                <select name="status" id="status" class="w-full border rounded p-2 mb-4">
-                    <option value="Niet Uitgereikt" {{ (($family->Status ?? 'NietUitgereikt') === 'NietUitgereikt') ? 'selected' : '' }}>Niet Uitgereikt</option>
-                    <option value="Uitgereikt" {{ ($family->Status ?? '') === 'Uitgereikt' ? 'selected' : '' }}>Uitgereikt</option>
-                </select>
-
-                @error('status')
-                <p class="text-red-500 text-xs mb-4">{{ $message }}</p>
-                @enderror
-
-                <button type="submit"
-                    class="px-4 py-2 bg-green-600 text-black rounded hover:bg-green-700 transition">
-                    Wijzig status voedselpakket
-                </button>
-            </form>
 
             <div class="mt-6 text-right">
                 <a href="{{ route('family.index') }}" class="text-blue-600 hover:underline">Terug naar overzicht</a>
