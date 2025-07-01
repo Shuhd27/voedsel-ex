@@ -291,17 +291,17 @@ class DatabaseSeeder extends Seeder
                 ]));
             }
 
-            // Admin gebruiker aanmaken
-            User::factory()->create([
-                'name' => 'Voedselbank Beheerder',
-                'email' => 'admin@voedselbank-maaskantje.nl',
-                'password' => Hash::make('wachtwoord'),
-            ]);
-            User::factory()->create([
-                'name' => 'Voedselbank Beheerder',
-                'email' => 'test@example.com',
-                'password' => Hash::make('cookie123'),
-            ]);
         }
+        // Admin gebruiker aanmaken
+        User::factory()->create([
+            'name' => 'Voedselbank Beheerder',
+            'email' => 'admin@voedselbank-maaskantje.nl',
+            'password' => Hash::make('wachtwoord'),
+        ]);
+        User::factory()->create([
+            'name' => 'Voedselbank Beheerder',
+            'email' => 'test@example.com',
+            'password' => Hash::make('cookie123'),
+        ]);
     }
 }
