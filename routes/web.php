@@ -27,4 +27,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/warehouse', [\App\Http\Controllers\WarehouseController::class, 'index'])->name('warehouse.index');
+    Route::get('/warehouse/{id}', [\App\Http\Controllers\WarehouseController::class, 'show'])->name('warehouse.show');
+    Route::get('/warehouse/{id}/edit', [\App\Http\Controllers\WarehouseController::class, 'edit'])->name('warehouse.edit');
+    Route::put('/warehouse/{id}', [\App\Http\Controllers\WarehouseController::class, 'update'])->name('warehouse.update');
+});
+
 require __DIR__.'/auth.php';

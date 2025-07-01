@@ -135,6 +135,25 @@ class DatabaseSeeder extends Seeder
             ['food_package_id' => 5,  'product_id' => 26, 'quantity_product_units' => 1],
             ['food_package_id' => 6,  'product_id' => 26, 'quantity_product_units' => 1],
         ];
+        $categoryIds = [];
+        $categories = [
+            ['name' => 'AGF',  'description' => 'Aardappelen groente en fruit'],
+            ['name' => 'KV',   'description' => 'Kaas en vleeswaren'],
+            ['name' => 'ZPE',  'description' => 'Zuivel plantaardig en eieren'],
+            ['name' => 'BB',   'description' => 'Bakkerij en Banket'],
+            ['name' => 'FSKT', 'description' => 'Frisdranken, sappen, koffie en thee'],
+            ['name' => 'PRW',  'description' => 'Pasta, rijst en wereldkeuken'],
+            ['name' => 'SSKO', 'description' => 'Soepen, sauzen, kruiden en olie'],
+            ['name' => 'SKCC', 'description' => 'Snoep, koek, chips en chocolade'],
+            ['name' => 'BVH',  'description' => 'Baby, verzorging en hygiëne'],
+        ];
+        foreach ($categories as $category) {
+            $categoryIds[] = DB::table('Categories')->insertGetId(array_merge($category, [
+                'IsActive' => 1,
+                'Created_at' => now(),
+                'Updated_at' => now(),
+            ]));
+        }
         foreach ($productPerFoodPackages as $productPerFoodPackage) {
             $productPerFoodPackageIds[] = DB::table('Product_Per_Food_Packages')->insertGetId(array_merge($productPerFoodPackage, [
                 'IsActive' => 1,
@@ -204,6 +223,7 @@ class DatabaseSeeder extends Seeder
                 'Updated_at' => now(),
             ]));
         }
+
         // Warehouses / magazijn aanmaken
         $warehouseIds = [];
         $warehouses = [
