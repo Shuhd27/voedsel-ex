@@ -2,10 +2,17 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+// use Illuminate\Support\Facades\DB;
+// food package families
+use App\Http\Controllers\FoodPackageController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+
+// food package families
+Route::get('/foodpackages', [FoodPackageController::class, 'index'])->name('foodpackages.index');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
