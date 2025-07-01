@@ -204,6 +204,25 @@ class DatabaseSeeder extends Seeder
         }
 
         // categories / categorieën aanmaken
+        $categoryIds = [];
+        $categories = [
+            ['name' => 'AGF',  'description' => 'Aardappelen groente en fruit'],
+            ['name' => 'KV',   'description' => 'Kaas en vleeswaren'],
+            ['name' => 'ZPE',  'description' => 'Zuivel plantaardig en eieren'],
+            ['name' => 'BB',   'description' => 'Bakkerij en Banket'],
+            ['name' => 'FSKT', 'description' => 'Frisdranken, sappen, koffie en thee'],
+            ['name' => 'PRW',  'description' => 'Pasta, rijst en wereldkeuken'],
+            ['name' => 'SSKO', 'description' => 'Soepen, sauzen, kruiden en olie'],
+            ['name' => 'SKCC', 'description' => 'Snoep, koek, chips en chocolade'],
+            ['name' => 'BVH',  'description' => 'Baby, verzorging en hygiëne'],
+        ];
+        foreach ($categories as $category) {
+            $categoryIds[] = DB::table('Categories')->insertGetId(array_merge($category, [
+                'IsActive' => 1,
+                'Created_at' => now(),
+                'Updated_at' => now(),
+            ]));
+        }
 
         // Warehouses / magazijn aanmaken
         $warehouseIds = [];
