@@ -13,7 +13,9 @@ Route::get('/', function () {
 
 // food package families
 Route::get('/family', [FamilyController::class, 'index'])->name('family.index');
-
+Route::get('/family/{id}', [FamilyController::class, 'show'])->name('family.show');
+Route::get('/family/{id}/edit', [FamilyController::class, 'edit'])->name('family.edit');
+Route::put('/family/{id}', [FamilyController::class, 'update'])->name('family.update');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
