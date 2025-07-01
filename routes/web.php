@@ -5,13 +5,14 @@ use Illuminate\Support\Facades\Route;
 // use Illuminate\Support\Facades\DB;
 // food package families
 use App\Http\Controllers\FoodPackageController;
+use App\Http\Controllers\FamilyController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 // food package families
-Route::get('/foodpackages', [FoodPackageController::class, 'index'])->name('foodpackages.index');
+Route::get('/family', [FamilyController::class, 'index'])->name('family.index');
 
 
 Route::get('/dashboard', function () {
