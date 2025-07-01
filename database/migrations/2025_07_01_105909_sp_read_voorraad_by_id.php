@@ -23,6 +23,7 @@ return new class extends Migration
                 PRO.Id as product_id,
                 WER.id as warehouse_id,
                 PRO.Name as product_name,
+                PRO.Expiration_date as expiration_date,
                 PRO.Barcode as barcode,
                 WER.delivery_date as delivery_date,
                 WER.receipt_date as receipt_date,

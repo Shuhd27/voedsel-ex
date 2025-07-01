@@ -45,4 +45,19 @@ class WarehouseController extends Controller
         // Logic to retrieve and display the list of warehouses
         return view('warehouse.index', ['products' => $products]);
     }
+    
+    public function show($id)
+    {
+        try {
+            // Call the stored procedure to retrieve the warehouse data by product ID
+            $product = DB::select('CALL sp_read_voorraad_by_id(?)', [$id]);
+            if (empty($product)) {
+                return redirect()->route('warehouse.index')->with('error', 'Product not found.');
+            }
+            return view('warehouse.show', ['product' => $product[0]]);
+        } catch (\Exception $e) {
+            Log::error('Error retrieving product data: ' . $e->getMessage());
+            return redirect()->route('warehouse.index')->with('error', 'Er is iets fout gegaan bij het ophalen van de data, probeer het later opnieuw.');
+        }
+    }
 }

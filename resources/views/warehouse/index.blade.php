@@ -60,9 +60,9 @@
                                     <td class="px-6 py-4 text-sm text-gray-900 border-b">{{ $product->expiration_date }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-900 border-b">{{ $product->location}}</td>
                                     <td class="px-6 py-4 text-sm border-b">
-                                        <button class="w-1/2 h-8 bg-blue-500 text-white rounded hover:bg-blue-600 text-xs">
+                                        <a href="{{route('warehouse.show', $product->product_id)}}" class="p-3 bg-blue-500 text-white rounded hover:bg-blue-600 text-xs">
                                             Details
-                                        </button>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
