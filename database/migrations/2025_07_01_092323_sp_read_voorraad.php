@@ -22,6 +22,7 @@ return new class extends Migration
             WER.id as warehouse_id,
             PRO.Name as product_name,
             WER.quantity as quantity,
+            CAT.Name as category,
             WER.Packaging_unit as packaging_unit,
             PRO.expiration_date as expiration_date,
             PPW.location as location
@@ -43,7 +44,11 @@ return new class extends Migration
             WER.quantity,
             WER.Packaging_unit,
             PRO.expiration_date,
-            PPW.location;
+            CAT.Name,
+            PPW.location
+
+            order by
+            PRO.Name asc;
         
 
         end
