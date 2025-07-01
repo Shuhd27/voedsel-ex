@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Warehouse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -76,5 +76,34 @@ class WarehouseController extends Controller
         }
     }
 
-    
+    public function update(Request $request, $id)
+    {
+        $maxQuantity = DB::table('warehouses')
+            ->join('product_per_warehouses', 'warehouses.id', '=', 'product_per_warehouses.warehouse_id')
+            ->where('product_id', $id)
+            ->value('quantity');
+
+        // Validate the request data
+        $validated = $request->validate([
+            'delivery_date' => 'required|date|after:today',
+            'quantity' => "required|integer|min:0|max:$maxQuantity",
+            'location' => 'nullable|string|max:255|in:Berlicum,Rosmalen,Sint-MichelsGestel,Middelrode,Schijndel,Gemonde,Den Bosch,Heeswijk Dinther,Vught',
+        ]);
+
+        try {
+            // Update the product in the database
+            DB::update('CALL sp_update_voorraad(?, ?, ?, ?)', [
+                $id,
+                $validated['location'],
+                $validated['delivery_date'],
+                $validated['quantity']
+            ]);
+            return redirect()->route('warehouse.show', ['id' => $id])->with('success', 'Product updated successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error updating product data: ' . $e->getMessage());
+            return redirect()->route('warehouse.edit', ['id' => $id])->withErrors(['error' => 'Er is iets fout gegaan bij het bijwerken van de gegevens, probeer het later opnieuw.']);
+        }
+    }
+
+
 }

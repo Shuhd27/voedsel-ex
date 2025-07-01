@@ -22,20 +22,27 @@ return new class extends Migration
             )
             BEGIN
 
-                DECLARE warehouse_id INT;
+                DECLARE sel_warehouse_id INT DEFAULT 0;
+                DECLARE old_quantity INT DEFAULT 0;
 
-                SELECT warehouse_id INTO warehouse_id
+                SELECT warehouse_id INTO sel_warehouse_id
                 FROM product_per_warehouses
-                WHERE product_id = INproduct_id;
+                WHERE product_id = INproduct_id
+                LIMIT 1;
+
+                SELECT quantity INTO old_quantity
+                FROM warehouses
+                WHERE id = sel_warehouse_id
+                LIMIT 1;
 
                 UPDATE product_per_warehouses
                 SET location = INlocation
                 WHERE product_id = INproduct_id;
 
                 UPDATE warehouses
-                SET quantity = INquantity,
+                SET quantity = (old_quantity - INquantity),
                     delivery_date = INdelivery_date
-                WHERE id = warehouse_id;              
+                WHERE id = sel_warehouse_id;              
 
             END
         ');
