@@ -18,20 +18,22 @@ class FamilyController extends Controller
 
         try {
             if (empty($diet)) {
-                // No filter - get all families
+                // Geen filter: haal alle families op
                 $families = DB::select('CALL sp_read_PeopleFamilies()');
             } else {
-                // Filter by dietary preference
-                $diet = $request->input('dietary_preference', '');
+                // dd($diet);
+                // Filteren op eetwens
                 $families = DB::select('CALL sp_read_families_by_dietary_preference(?)', [$diet]);
             }
         } catch (\Exception $e) {
-            Log::error('Error retrieving family data: ' . $e->getMessage());
+            Log::error('Fout bij ophalen van gegevens: ' . $e->getMessage());
             $families = [];
         }
 
         return view('family.index', compact('families'));
     }
+
+
 
     public function show($id)
     {
@@ -54,55 +56,64 @@ class FamilyController extends Controller
     public function edit($id)
     {
         try {
-            // Zelfde procedure als show(), maar nu voor de edit view
+            // Haal het gezin op via de stored procedure
             $family = DB::select('CALL sp_read_family_by_id(?)', [$id]);
 
             if (empty($family)) {
-                return redirect()->route('family.index')->with('error', 'Gezin niet gevonden.');
+                return redirect()->route('family.index')
+                    ->with('error', 'Gezin niet gevonden.');
             }
 
+
+
+            // Toon de bewerkpagina
             return view('family.edit', ['family' => $family[0]]);
         } catch (\Exception $e) {
             Log::error('Error retrieving family data for edit: ' . $e->getMessage());
-            return redirect()->route('family.index')->with('error', 'Er is iets fout gegaan bij het ophalen van de data, probeer het later opnieuw.');
+
+            return redirect()->route('family.index')
+                ->with('error', 'Er is iets fout gegaan bij het ophalen van de data, probeer het later opnieuw.');
         }
     }
 
     public function update(Request $request, $id)
     {
+        // Valideer de input
         $validated = $request->validate([
             'status' => 'required|in:Uitgereikt,Niet Uitgereikt',
         ]);
 
-        $familystatusResult = DB::select('SELECT status FROM food_packages WHERE family_id = ?', [$id]);
-        if (!empty($familystatusResult)) {
-            foreach ($familystatusResult as $result) {
-                if ($result->status === 'NietMeerIngeschreven') {
-                    return redirect()->route('family.show', $id)->with('error','Dit gezin is niet meer ingeschreven en kan daarom niet worden aangepast.');
-                }
-            }
+        // Controleer of het gezin nog ingeschreven is
+        $statusResult = DB::table('food_packages')
+            ->where('family_id', $id)
+            ->pluck('status');
+
+        if ($statusResult->contains('NietMeerIngeschreven')) {
+            return redirect()->route('family.edit', $id)
+                ->with('error', 'Dit gezin is niet meer ingeschreven bij de voedselbank en daarom kan er geen voedselpakket worden uitgereikt.');
         }
 
+        // Zet de status om naar de database ENUM waarde
+        $dbStatus = $validated['status'] === 'Uitgereikt' ? 'Uitgereikt' : 'NietUitgereikt';
+
+        // Alleen bij 'Uitgereikt' zetten we de distributiedatum
+        $distributionDate = $validated['status'] === 'Uitgereikt' ? now()->format('Y-m-d') : null;
+
         try {
-            // Map the status to database ENUM values
-            $dbStatus = $validated['status'] === 'Uitgereikt' ? 'Uitgereikt' : 'NietUitgereikt';
+            // Roep de stored procedure aan om status bij te werken
+            DB::statement('CALL sp_update_food_package_status(?, ?, ?)', [
+                $id,
+                $dbStatus,
+                $distributionDate
+            ]);
 
-            // Set distribution date if status is "Uitgereikt"
-            if ($validated['status'] === 'Uitgereikt') {
-                $datum = now()->format('Y-m-d');
-            } else {
-                $datum = null;
-            }
-
-            DB::select('CALL sp_update_Family(?, ?, ?)', [$id, $dbStatus, $datum]);
-
-            return redirect()->route('family.show', $id)
-                ->with('success', 'De wijziging is doorgevoerd');
+            return redirect()->route('family.edit', $id)
+                ->with('success', 'De wijziging is succesvol doorgevoerd.');
         } catch (\Exception $e) {
-            Log::error('Error updating status: ' . $e->getMessage());
-            return back()->withErrors('Er is iets fout gegaan bij het wijzigen van de status.');
+            Log::error("Fout bij het bijwerken van de status voor gezin ID $id: " . $e->getMessage());
+
+            return redirect()->back()
+                ->with('error', 'Er is een fout opgetreden bij het wijzigen van de status.');
         }
     }
 }
-    
-
