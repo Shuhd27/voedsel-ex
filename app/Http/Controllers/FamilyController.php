@@ -14,15 +14,12 @@ class FamilyController extends Controller
             'dietary_preference' => 'nullable|string|max:100|in:GeenVarken,Veganistisch,Vegetarisch,Omnivoor',
         ]);
 
-        $diet = $request->input('dietary_preference');
+        $diet = $validated['dietary_preference'] ?? null;
 
         try {
             if (empty($diet)) {
-                // No filter - get all families
                 $families = DB::select('CALL sp_read_PeopleFamilies()');
             } else {
-                // Filter by dietary preference
-                $diet = $request->input('dietary_preference', '');
                 $families = DB::select('CALL sp_read_families_by_dietary_preference(?)', [$diet]);
             }
         } catch (\Exception $e) {
@@ -32,6 +29,7 @@ class FamilyController extends Controller
 
         return view('family.index', compact('families'));
     }
+
 
     public function show($id)
     {
@@ -78,7 +76,7 @@ class FamilyController extends Controller
         if (!empty($familystatusResult)) {
             foreach ($familystatusResult as $result) {
                 if ($result->status === 'NietMeerIngeschreven') {
-                    return redirect()->route('family.show', $id)->with('error','Dit gezin is niet meer ingeschreven en kan daarom niet worden aangepast.');
+                    return redirect()->route('family.show', $id)->with('error', 'Dit gezin is niet meer ingeschreven en kan daarom niet worden aangepast.');
                 }
             }
         }
@@ -104,5 +102,3 @@ class FamilyController extends Controller
         }
     }
 }
-    
-
