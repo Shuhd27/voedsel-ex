@@ -27,7 +27,7 @@ return new class extends Migration
                 ON DP.id = DPF.dietary_preference_id AND DP.IsActive = b\'1\'
             INNER JOIN People REP 
                 ON REP.family_id = FAM.id AND REP.is_representative = b\'1\' AND REP.IsActive = b\'1\'
-            WHERE FAM.IsActive = b\'1\' AND FAM.receives_food_package = b\'1\'
+            WHERE FAM.IsActive = b\'1\' 
             GROUP BY FAM.id, FAM.name, FAM.description, FAM.number_of_adults, FAM.number_of_children, FAM.number_of_babies, REP.first_name, REP.infix, REP.last_name
             ORDER BY FAM.name ASC;
         END

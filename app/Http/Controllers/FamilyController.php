@@ -14,21 +14,25 @@ class FamilyController extends Controller
             'dietary_preference' => 'nullable|string|max:100|in:GeenVarken,Veganistisch,Vegetarisch,Omnivoor',
         ]);
 
-        $diet = $validated['dietary_preference'] ?? null;
-
+        $diet = $request->input('dietary_preference');
+        
         try {
             if (empty($diet)) {
+                // Geen filter: haal alle families op
                 $families = DB::select('CALL sp_read_PeopleFamilies()');
             } else {
+               // dd($diet);
+                // Filteren op eetwens
                 $families = DB::select('CALL sp_read_families_by_dietary_preference(?)', [$diet]);
             }
         } catch (\Exception $e) {
-            Log::error('Error retrieving family data: ' . $e->getMessage());
+            Log::error('Fout bij ophalen van gegevens: ' . $e->getMessage());
             $families = [];
         }
 
         return view('family.index', compact('families'));
     }
+
 
 
     public function show($id)
