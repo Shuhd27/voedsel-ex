@@ -15,13 +15,13 @@ class FamilyController extends Controller
         ]);
 
         $diet = $request->input('dietary_preference');
-        
+
         try {
             if (empty($diet)) {
                 // Geen filter: haal alle families op
                 $families = DB::select('CALL sp_read_PeopleFamilies()');
             } else {
-               // dd($diet);
+                // dd($diet);
                 // Filteren op eetwens
                 $families = DB::select('CALL sp_read_families_by_dietary_preference(?)', [$diet]);
             }
@@ -80,7 +80,8 @@ class FamilyController extends Controller
         if (!empty($familystatusResult)) {
             foreach ($familystatusResult as $result) {
                 if ($result->status === 'NietMeerIngeschreven') {
-                    return redirect()->route('family.show', $id)->with('error', 'Dit gezin is niet meer ingeschreven en kan daarom niet worden aangepast.');
+                    return redirect()->route('family.edit', $id)
+                    ->with('error', 'Dit gezin is niet meer ingeschreven bij de voedselbank en daarom kan er geen voedselpakket worden uitgereikt');
                 }
             }
         }
@@ -98,7 +99,7 @@ class FamilyController extends Controller
 
             DB::select('CALL sp_update_Family(?, ?, ?)', [$id, $dbStatus, $datum]);
 
-            return redirect()->route('family.show', $id)
+            return redirect()->route('family.edit', $id)
                 ->with('success', 'De wijziging is doorgevoerd');
         } catch (\Exception $e) {
             Log::error('Error updating status: ' . $e->getMessage());

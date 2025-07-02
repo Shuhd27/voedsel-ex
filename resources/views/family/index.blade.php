@@ -5,7 +5,7 @@
                 <div class="p-6 text-gray-900">
                     <!-- Header Section -->
                     <div class="flex justify-between items-center mb-6">
-                        <h1 class="text-2xl font-bold text-green-600">Overzicht Voedselpaketten</h1>
+                        <h1 class="text-2xl font-bold text-green-600 underline">Overzicht gezinnen met Voedselpaketten</h1>
                         <div class="flex gap-3">
                             <form action="{{ route('family.index') }}" method="GET" class="flex items-center gap-3">
                                 <select name="dietary_preference" id="dietary_preference">
