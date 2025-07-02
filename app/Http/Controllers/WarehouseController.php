@@ -19,10 +19,10 @@ class WarehouseController extends Controller
             ]);
             $categoryName = $request->input('category');
             try {
-                if($categoryName === 'Nothing') {
+                if ($categoryName === 'Nothing') {
                     // If the category is "nothing", return all products
                     $products = DB::select('CALL sp_read_voorraad()');
-                }else{
+                } else {
 
                     $products = DB::select('CALL sp_read_voorraad_by_catogory(?)', [$categoryName]);
                 }
@@ -45,7 +45,7 @@ class WarehouseController extends Controller
         // Logic to retrieve and display the list of warehouses
         return view('warehouse.index', ['products' => $products]);
     }
-    
+
     public function show($id)
     {
         try {
@@ -86,8 +86,13 @@ class WarehouseController extends Controller
         // Validate the request data
         $validated = $request->validate([
             'delivery_date' => 'required|date|after:today',
-            'quantity' => "required|integer|min:0|max:$maxQuantity",
+            'quantity' => "required|integer|min:1|max:$maxQuantity",
             'location' => 'nullable|string|max:255|in:Berlicum,Rosmalen,Sint-MichelsGestel,Middelrode,Schijndel,Gemonde,Den Bosch,Heeswijk Dinther,Vught',
+        ], [
+            'quantity.required' => 'Het aantal is verplicht.',
+            'quantity.integer' => 'Het aantal moet een geldig getal zijn.',
+            'quantity.min' => 'Het aantal moet minimaal 1 zijn.',
+            'quantity.max' => "Er worden meer producten uitgeleverd dan er in voorrad zijn.",
         ]);
 
         try {
@@ -98,12 +103,12 @@ class WarehouseController extends Controller
                 $validated['delivery_date'],
                 $validated['quantity']
             ]);
-            return redirect()->route('warehouse.show', ['id' => $id])->with('success', 'Product updated successfully.');
+            
+            return redirect()->route('warehouse.edit', ['id' => $id])->with('success', 'De productgegevens zijn gewijzigd.')->with('redirect_to_show', true);
+            
         } catch (\Exception $e) {
             Log::error('Error updating product data: ' . $e->getMessage());
             return redirect()->route('warehouse.edit', ['id' => $id])->withErrors(['error' => 'Er is iets fout gegaan bij het bijwerken van de gegevens, probeer het later opnieuw.']);
         }
     }
-
-
 }
