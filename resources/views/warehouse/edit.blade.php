@@ -4,8 +4,18 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <!-- Header -->
-                    <h1 class="text-2xl font-bold text-green-600 mb-8">Wijzig Product Details Aardappel</h1>
-                    
+                    <h1 class="text-2xl font-bold text-green-600 mb-8 underline">Wijzig Product Details Aardappel</h1>
+                    @if(session('success'))
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
+                            <span class="block sm:inline px-4">{{ session('success') }}</span>
+                        </div>
+                    @endif
+                    @error('quantity')
+                        <div class="bg-red-100 border border-red-400 text-red-700 px
+                            -4 py-3 rounded relative mb-6" role="alert">
+                            <span class="block sm:inline px-4">De productgegevens kunnen niet worden gewijzigd</span>
+                        </div>
+                    @enderror
                     <!-- Edit Form -->
                     <form action="{{ route('warehouse.update', $product->product_id ?? 1) }}" method="POST">
                         @csrf
@@ -15,19 +25,19 @@
                             <div class="grid grid-cols-2 gap-4 py-3">
                                 <label class="text-gray-700 font-medium">Productnaam</label>
                                 <input type="text" value="{{ $product->product_name }}" 
-                                       class="px-3 py-2 border border-gray-300 rounded-md bg-gray-100" readonly>
+                                       class="px-3 py-2 border border-gray-300 rounded-md bg-blue-50" readonly>
                             </div>
                             
                             <div class="grid grid-cols-2 gap-4 py-3">
                                 <label class="text-gray-700 font-medium">Houdbaarheidsdatum</label>
                                 <input type="text" value="{{ $product->expiration_date}}" 
-                                       class="px-3 py-2 border border-gray-300 rounded-md bg-gray-100" readonly>
+                                       class="px-3 py-2 border border-gray-300 rounded-md bg-blue-50" readonly>
                             </div>
                             
                             <div class="grid grid-cols-2 gap-4 py-3">
                                 <label class="text-gray-700 font-medium">Barcode</label>
                                 <input type="text" value="{{ $product->barcode}}" 
-                                       class="px-3 py-2 border border-gray-300 rounded-md bg-gray-100" readonly>
+                                       class="px-3 py-2 border border-gray-300 rounded-md bg-blue-50" readonly>
                             </div>
                             
                             <div class="grid grid-cols-2 gap-4 py-3">
@@ -52,7 +62,7 @@
                             <div class="grid grid-cols-2 gap-4 py-3">
                                 <label class="text-gray-700 font-medium">Ontvangstdatum</label>
                                 <input type="date"  value="{{ $product->receipt_date }}" 
-                                       class="px-3 py-2 border border-gray-300 rounded-md bg-gray-100" readonly>
+                                       class="px-3 py-2 border border-gray-300 rounded-md bg-blue-50" readonly>
                            </div>
                             
                             <div class="grid grid-cols-2 gap-4 py-3">
@@ -76,7 +86,7 @@
                             <div class="grid grid-cols-2 gap-4 py-3">
                                 <label class="text-gray-700 font-medium">Aantal op voorraad</label>
                                 <input type="number" value="{{ $product->quantity}}" 
-                                 class="px-3 py-2 border border-gray-300 rounded-md bg-gray-100" readonly>
+                                 class="px-3 py-2 border border-gray-300 rounded-md bg-blue-50" readonly>
                             </div>
                         </div>
                         
@@ -100,4 +110,11 @@
             </div>
         </div>
     </div>
+    @if(session('redirect_to_show'))
+<script>
+    setTimeout(function() {
+        window.location.href = "{{ route('warehouse.show', ['id' => $product->product_id]) }}";
+    }, 3000);
+</script>
+@endif
 </x-app-layout>
