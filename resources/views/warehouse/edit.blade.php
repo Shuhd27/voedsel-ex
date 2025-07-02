@@ -4,7 +4,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <!-- Header -->
-                    <h1 class="text-2xl font-bold text-green-600 mb-8">Wijzig Product Details Aardappel</h1>
+                    <h1 class="text-2xl font-bold text-green-600 mb-8 underline">Wijzig Product Details Aardappel</h1>
                     
                     <!-- Edit Form -->
                     <form action="{{ route('warehouse.update', $product->product_id ?? 1) }}" method="POST">
