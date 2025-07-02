@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div class="py-12 max-w-3xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-12 w-2/3 mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
             <h1 class="text-2xl font-bold mb-6 text-green-600">Voedselpakket Details: {{ $family->Gezinsnaam }}</h1>
 
