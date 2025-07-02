@@ -50,4 +50,12 @@
         }, 3000);
     </script>
     @endif
+    @if(session('error'))
+    <script>
+        // Na 3 seconden terug naar overzicht
+        setTimeout(() => {
+            window.location.href = "{{ route('family.show', $family->id) }}";
+        }, 3000);
+    </script>
+    @endif
 </x-app-layout>
