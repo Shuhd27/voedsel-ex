@@ -19,7 +19,7 @@
                                 <button type="submit" class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
                                     Toon Gezinnen
                                 </button>
-                                @error('dietary_preferenc')
+                                @error('dietary_preference')
                                 <span class="text-red-500 text-xs">{{ $message }}</span>
                                 @enderror
                             </form>
